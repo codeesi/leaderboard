@@ -70,114 +70,56 @@
         }
         @media (max-width: 600px) {
             h1 {
-                font-size: 24px;
-                margin-bottom: 50px;
-            }
-            .button {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-            th, td {
-                padding: 6px;
-                font-size: 14px;
-            }
-        }
-        @media (max-width: 400px) {
-            h1 {
-                font-size: 20px;
-                margin-bottom: 40px;
-            }
-            .button {
-                font-size: 12px;
-                padding: 6px 12px;
-            }
-            th, td {
-                padding: 4px;
-                font-size: 12px;
+                font-size: 24px; /* Responsive font size */
             }
         }
     </style>
 </head>
 <body>
     <h1>ESI Hall Of Fame</h1>
-    
     <div class="button-container">
-        <button class="button" id="ctf-button">CTF Leaderboard</button>
-        <button class="button" id="cp-button">CP Leaderboard</button>
+        <button id="ctf-button" class="button">CTF Leaderboard</button>
+        <button id="cp-button" class="button">CP Leaderboard</button>
     </div>
     
     <div id="ctf-section" class="leaderboard">
-        <h2>Capture The Flag Leaderboard</h2>
+        <h2>CTF Leaderboard</h2>
         <table id="ctf-leaderboard">
             <tr>
                 <th>Rank</th>
                 <th>Username</th>
-                <th>Name</th> <!-- New Name column -->
+                <th>Name</th>
                 <th>Score</th>
             </tr>
         </table>
     </div>
     
     <div id="cp-section" class="leaderboard hidden">
-        <h2>Competitive Programming Leaderboard</h2>
+        <h2>CP Leaderboard</h2>
         <table id="cp-leaderboard">
             <tr>
                 <th>Rank</th>
                 <th>Username</th>
-                <th>Name</th> <!-- New Name column -->
+                <th>Name</th>
                 <th>Score</th>
             </tr>
         </table>
     </div>
 
     <script>
-        // Simulated JSON data (replace this with actual JSON fetching)
+        // Simulated leaderboard data (replace with your actual data)
         const leaderboardData = {
-            "ctf": [
-                {"username": "hacker1", "name": "Alice", "score": 5},
-                {"username": "securitypro", "name": "Bob", "score": 1350},
-                {"username": "flaghunter", "name": "Charlie", "score": 1200},
-                {"username": "ftest", "name": "toast", "score": 0}
+            ctf: [
+                { username: 'player1', name: 'Player One', score: 150 },
+                { username: 'player2', name: 'Player Two', score: 200 },
+                { username: 'player3', name: 'Player Three', score: 100 }
             ],
-            "cp": [
-                {"username": "coder123", "name": "David", "score": 2000},
-                {"username": "algoguru", "name": "Eve", "score": 1950},
-                {"username": "problemsolver", "name": "Frank", "score": 1800}
+            cp: [
+                { username: 'playerA', name: 'Player A', score: 250 },
+                { username: 'playerB', name: 'Player B', score: 300 },
+                { username: 'playerC', name: 'Player C', score: 150 }
             ]
         };
-
-        function getTrophyIcon(rank) {
-            switch (rank) {
-                case 0: // 1st place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
-                case 1: // 2nd place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="silver"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
-                case 2: // 3rd place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="brown"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
-                default:
-                    return ''; // No trophy for other ranks
-            }
-        }
-
-        function updateLeaderboard(leaderboardId, data) {
-            const table = document.getElementById(leaderboardId);
-            table.innerHTML = `<tr>
-                <th>Rank</th>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Score</th>
-            </tr>`;
-            data.forEach((entry, index) => {
-                const rank = index + 1;
-                const trophyIcon = getTrophyIcon(index);
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${trophyIcon} ${rank}</td>
-                                 <td>${entry.username}</td>
-                                 <td>${entry.name}</td>
-                                 <td>${entry.score}</td>`;
-                table.appendChild(row);
-            });
-        }
 
         $(document).ready(function() {
             // Function to update leaderboard
@@ -190,9 +132,11 @@
                     <th>Name</th>
                     <th>Score</th>
                 </tr>`;
-        
+
                 // Check if data is an array and not empty
                 if (Array.isArray(data) && data.length > 0) {
+                    // Sort data by score in descending order
+                    data.sort((a, b) => b.score - a.score);
                     data.forEach((entry, index) => {
                         const rank = index + 1;
                         const trophyIcon = getTrophyIcon(index);
@@ -210,24 +154,31 @@
                     table.appendChild(row);
                 }
             }
-        
+
+            // Function to get trophy icon based on rank
+            function getTrophyIcon(rank) {
+                if (rank === 0) return "🥇"; // Gold for 1st place
+                if (rank === 1) return "🥈"; // Silver for 2nd place
+                if (rank === 2) return "🥉"; // Bronze for 3rd place
+                return ""; // No trophy for others
+            }
+
             // Initial setup to update leaderboards
             updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
             updateLeaderboard('cp-leaderboard', leaderboardData.cp);
-        
+
             $("#ctf-button").click(function() {
                 $("#ctf-section").removeClass('hidden');
                 $("#cp-section").addClass('hidden');
                 updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
             });
-        
+
             $("#cp-button").click(function() {
                 $("#cp-section").removeClass('hidden');
                 $("#ctf-section").addClass('hidden');
                 updateLeaderboard('cp-leaderboard', leaderboardData.cp);
             });
         });
-
     </script>
 </body>
 </html>
