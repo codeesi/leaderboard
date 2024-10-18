@@ -15,6 +15,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            box-sizing: border-box; /* Ensure padding is included in total width */
         }
         h1 {
             text-align: center;
@@ -30,6 +31,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: 20px 0;
         }
         th, td {
             border: 1px solid #ddd;
@@ -66,6 +68,34 @@
             width: 20px; /* Adjust the size of the trophy icons */
             vertical-align: middle; /* Align with text */
         }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+                margin-bottom: 50px;
+            }
+            .button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            th, td {
+                padding: 6px;
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 20px;
+                margin-bottom: 40px;
+            }
+            .button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            th, td {
+                padding: 4px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -89,7 +119,7 @@
     </div>
     
     <div id="cp-section" class="leaderboard hidden">
-        <h2>Competetive Programming Leaderboard</h2>
+        <h2>Competitive Programming Leaderboard</h2>
         <table id="cp-leaderboard">
             <tr>
                 <th>Rank</th>
@@ -119,51 +149,48 @@
         function getTrophyIcon(rank) {
             switch (rank) {
                 case 0: // 1st place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2zm6 8c2.21 0 4 1.79 4 4 0 1.67-1.06 3.09-2.5 3.58L20 20H4l1.5-2.42C2.06 15.09 1 13.67 1 12c0-2.21 1.79-4 4-4h14zm-2 4H6c0 1.45 1.03 2.65 2.43 2.94L12 18h4l1.57-1.06C17.97 14.65 19 13.45 19 12z"/></svg>`;
+                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gold"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
                 case 1: // 2nd place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="silver"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2zm6 8c2.21 0 4 1.79 4 4 0 1.67-1.06 3.09-2.5 3.58L20 20H4l1.5-2.42C2.06 15.09 1 13.67 1 12c0-2.21 1.79-4 4-4h14zm-2 4H6c0 1.45 1.03 2.65 2.43 2.94L12 18h4l1.57-1.06C17.97 14.65 19 13.45 19 12z"/></svg>`;
+                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="silver"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
                 case 2: // 3rd place
-                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#cd7f32"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2zm6 8c2.21 0 4 1.79 4 4 0 1.67-1.06 3.09-2.5 3.58L20 20H4l1.5-2.42C2.06 15.09 1 13.67 1 12c0-2.21 1.79-4 4-4h14zm-2 4H6c0 1.45 1.03 2.65 2.43 2.94L12 18h4l1.57-1.06C17.97 14.65 19 13.45 19 12z"/></svg>`;
+                    return `<svg class="trophy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="brown"><path d="M12 2c1.1 0 2 .9 2 2v2h6v2h-6v4c0 1.1-.9 2-2 2s-2-.9-2-2V6H4V4h6V2c0-1.1.9-2 2-2z"/></svg>`;
                 default:
-                    return '';
+                    return ''; // No trophy for other ranks
             }
         }
 
-        function populateLeaderboard(type) {
-            const tableBody = $(`#${type}-leaderboard`);
-            const data = leaderboardData[type];
-
-            // Clear the table
-            tableBody.find("tr:gt(0)").remove();
-
-            data.forEach((player, index) => {
-                const rankIcon = getTrophyIcon(index);
-                tableBody.append(`
-                    <tr>
-                        <td>${rankIcon} ${index + 1}</td>
-                        <td>${player.username}</td>
-                        <td>${player.name}</td> <!-- Add player name -->
-                        <td>${player.score}</td>
-                    </tr>
-                `);
+        function updateLeaderboard(leaderboardId, data) {
+            const table = document.getElementById(leaderboardId);
+            table.innerHTML = `<tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>`;
+            data.forEach((entry, index) => {
+                const rank = index + 1;
+                const trophyIcon = getTrophyIcon(index);
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${trophyIcon} ${rank}</td>
+                                 <td>${entry.username}</td>
+                                 <td>${entry.name}</td>
+                                 <td>${entry.score}</td>`;
+                table.appendChild(row);
             });
         }
 
         $(document).ready(function() {
-            $('#ctf-button').click(function() {
-                $('#ctf-section').removeClass('hidden');
-                $('#cp-section').addClass('hidden');
-                populateLeaderboard('ctf');
+            $("#ctf-button").click(function() {
+                $("#ctf-section").removeClass('hidden');
+                $("#cp-section").addClass('hidden');
+                updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
             });
-
-            $('#cp-button').click(function() {
-                $('#cp-section').removeClass('hidden');
-                $('#ctf-section').addClass('hidden');
-                populateLeaderboard('cp');
+            
+            $("#cp-button").click(function() {
+                $("#cp-section").removeClass('hidden');
+                $("#ctf-section").addClass('hidden');
+                updateLeaderboard('cp-leaderboard', leaderboardData.cp);
             });
-
-            // Default to show CTF leaderboard on load
-            populateLeaderboard('ctf');
         });
     </script>
 </body>
