@@ -72,6 +72,16 @@
             h1 {
                 font-size: 24px; /* Responsive font size */
             }
+            .button {
+                width: 100%; /* Full width buttons for small screens */
+                margin: 5px 0; /* Margin between buttons */
+            }
+            table {
+                font-size: 14px; /* Smaller table font size */
+            }
+            th, td {
+                padding: 10px; /* Increased padding for touch devices */
+            }
         }
     </style>
 </head>
@@ -149,34 +159,30 @@
                         table.appendChild(row);
                     });
                 } else {
-                    // If no data, show a message
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td colspan="4" style="text-align:center;">No players found</td>`;
+                    row.innerHTML = `<td colspan="4">No data available</td>`;
                     table.appendChild(row);
                 }
             }
 
             // Function to get trophy icon based on rank
             function getTrophyIcon(rank) {
-                if (rank === 0) return "🥇"; // Gold for 1st place
-                if (rank === 1) return "🥈"; // Silver for 2nd place
-                if (rank === 2) return "🥉"; // Bronze for 3rd place
-                return ""; // No trophy for others
+                if (rank === 0) return '<img class="trophy" src="gold_trophy.png" alt="Gold Trophy">';
+                if (rank === 1) return '<img class="trophy" src="silver_trophy.png" alt="Silver Trophy">';
+                if (rank === 2) return '<img class="trophy" src="bronze_trophy.png" alt="Bronze Trophy">';
+                return '';
             }
 
-            // Initial setup to update leaderboards
-            updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
-            updateLeaderboard('cp-leaderboard', leaderboardData.cp);
-
-            $("#ctf-button").click(function() {
-                $("#ctf-section").removeClass('hidden');
-                $("#cp-section").addClass('hidden');
+            // Button click event handlers
+            $('#ctf-button').click(function() {
+                $('#cp-section').addClass('hidden');
+                $('#ctf-section').removeClass('hidden');
                 updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
             });
 
-            $("#cp-button").click(function() {
-                $("#cp-section").removeClass('hidden');
-                $("#ctf-section").addClass('hidden');
+            $('#cp-button').click(function() {
+                $('#ctf-section').addClass('hidden');
+                $('#cp-section').removeClass('hidden');
                 updateLeaderboard('cp-leaderboard', leaderboardData.cp);
             });
         });
