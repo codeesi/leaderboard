@@ -166,11 +166,11 @@
             }
 
             // Function to get trophy icon based on rank
-            function getTrophyIcon(rank) {
-                if (rank === 0) return '<img class="trophy" src="gold_trophy.png" alt="Gold Trophy">';
-                if (rank === 1) return '<img class="trophy" src="silver_trophy.png" alt="Silver Trophy">';
-                if (rank === 2) return '<img class="trophy" src="bronze_trophy.png" alt="Bronze Trophy">';
-                return '';
+             function getTrophyIcon(rank) {
+                if (rank === 0) return "🥇"; // Gold for 1st place
+                if (rank === 1) return "🥈"; // Silver for 2nd place
+                if (rank === 2) return "🥉"; // Bronze for 3rd place
+                return ""; // No trophy for others
             }
 
             // Button click event handlers
