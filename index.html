@@ -180,18 +180,54 @@
         }
 
         $(document).ready(function() {
+            // Function to update leaderboard
+            function updateLeaderboard(leaderboardId, data) {
+                const table = document.getElementById(leaderboardId);
+                // Clear the table and add header
+                table.innerHTML = `<tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>`;
+        
+                // Check if data is an array and not empty
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach((entry, index) => {
+                        const rank = index + 1;
+                        const trophyIcon = getTrophyIcon(index);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${trophyIcon} ${rank}</td>
+                                         <td>${entry.username}</td>
+                                         <td>${entry.name}</td>
+                                         <td>${entry.score}</td>`;
+                        table.appendChild(row);
+                    });
+                } else {
+                    // If no data, show a message
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td colspan="4" style="text-align:center;">No players found</td>`;
+                    table.appendChild(row);
+                }
+            }
+        
+            // Initial setup to update leaderboards
+            updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
+            updateLeaderboard('cp-leaderboard', leaderboardData.cp);
+        
             $("#ctf-button").click(function() {
                 $("#ctf-section").removeClass('hidden');
                 $("#cp-section").addClass('hidden');
                 updateLeaderboard('ctf-leaderboard', leaderboardData.ctf);
             });
-            
+        
             $("#cp-button").click(function() {
                 $("#cp-section").removeClass('hidden');
                 $("#ctf-section").addClass('hidden');
                 updateLeaderboard('cp-leaderboard', leaderboardData.cp);
             });
         });
+
     </script>
 </body>
 </html>
